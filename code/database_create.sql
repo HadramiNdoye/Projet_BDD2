@@ -38,5 +38,18 @@ CREATE TABLE salle
     CONSTRAINT check_nomsalle CHECK (nom_salle IN('salle1','salle2','salle3'))
 );
 
-
+CREATE TABLE personne
+(
+    mail varchar(30),
+    nom varchar(30) NOT NULL,
+    prenom varchar(30) NOT NULL,
+    data_naissance date NOT NULL,
+    adresse varchar(50) NOT NULL,
+    numero_telephone varchar(30) NOT NULL,
+    id_spectacle integer NOT NULL,
+    id_evenement integer NOT NULL,
+    CONSTRAINT pk_personne PRIMARY KEY (mail),
+    CONSTRAINT fk_personne_spectacle FOREIGN KEY (id_spectacle) REFERENCES spectacle(id_spectacle),
+    CONSTRAINT fk_personne_evenement FOREIGN KEY (id_evenement) REFERENCES evenement(id_evenement)
+);
 
