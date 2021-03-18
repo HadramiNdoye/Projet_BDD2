@@ -1,4 +1,9 @@
+drop table inscription;
+drop table benevolep ;
+drop table tarif ;
+drop table tiket ;
 drop table personne;
+drop table artist ;
 drop table salle ;
 drop table spectacle ;
 drop table evenement ;
@@ -38,6 +43,18 @@ CREATE TABLE salle
     CONSTRAINT check_nomsalle CHECK (nom_salle IN('salle1','salle2','salle3'))
 );
 
+CREATE TABLE artist
+(
+    nom_artist varchar(30),
+    id_spectacle integer,
+    id_evenement integer NOT NULL,
+    description_artist varchar(30) NOT NULL,
+    CONSTRAINT pk_artist PRIMARY KEY (nom_artist),
+    CONSTRAINT fk_artist_id_evenement FOREIGN KEY(id_evenement) REFERENCES evenement(id_evenement),
+    CONSTRAINT fk_artist_id_spectacle FOREIGN KEY(id_spectacle) REFERENCES spectacle(id_spectacle)
+
+);
+
 CREATE TABLE personne
 (
     mail varchar(30),
@@ -53,3 +70,47 @@ CREATE TABLE personne
     CONSTRAINT fk_personne_evenement FOREIGN KEY (id_evenement) REFERENCES evenement(id_evenement)
 );
 
+CREATE TABLE tiket
+(
+    id_tiket integer,
+    mail varchar(30),
+    prix numeric(3,0) not null,
+    CONSTRAINT pk_tiket PRIMARY KEY (id_tiket),
+    CONSTRAINT fk_tiket_personne FOREIGN KEY (mail) REFERENCES personne (mail),
+    CONSTRAINT check_prix CHECK (prix > 0)
+);
+
+CREATE TABLE tarif
+(
+    id_tarif integer,
+    id_spectacle integer,
+    type_tarif varchar(30) not null ,
+    CONSTRAINT pk_tarif PRIMARY KEY (id_tarif),
+    CONSTRAINT fk_tarif_spectacle FOREIGN KEY (id_spectacle) REFERENCES spectacle (id_spectacle)
+ 
+);
+
+CREATE TABLE benevolep
+(
+  mail varchar(30),
+  nom varchar(30) NOT NULL,
+  prenom varchar(30) NOT NULL,
+  data_naissance date NOT NULL,
+  adresse varchar(50) NOT NULL,
+  numero_telephone varchar(30) NOT NULL,
+  id_evenement integer,
+  CONSTRAINT pk_benevolep PRIMARY KEY (mail),
+  CONSTRAINT fk_benevolep_evenement FOREIGN KEY (id_evenement) REFERENCES evenement(id_evenement)
+ 
+);
+
+CREATE TABLE inscription
+(
+  mail varchar(30),
+  id_evenement integer,
+  CONSTRAINT pk_inscription PRIMARY KEY (mail,id_evenement),
+
+  CONSTRAINT fk_inscription_mail FOREIGN KEY (mail) REFERENCES personne (mail),
+  CONSTRAINT fk_inscription_id_evenement FOREIGN KEY (id_evenement) REFERENCES evenement(id_evenement)
+
+);
