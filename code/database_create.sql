@@ -1,3 +1,8 @@
+drop table post ;
+drop table salarie ;
+drop table benevoleresp ;
+drop table pole ;
+drop table payement ;
 drop table inscription;
 drop table benevolep ;
 drop table tarif ;
@@ -114,3 +119,58 @@ CREATE TABLE inscription
   CONSTRAINT fk_inscription_id_evenement FOREIGN KEY (id_evenement) REFERENCES evenement(id_evenement)
 
 );
+
+CREATE TABLE payement
+(
+  id_payement integer,
+  nom_artist varchar(30),
+  date_payement datetime not null,
+  montant NUMERIC(3,0) not null,
+  CONSTRAINT pk_payement PRIMARY KEY (id_payement),
+  CONSTRAINT fk_payement_artist FOREIGN KEY (nom_artist) REFERENCES artist (nom_artist),
+  CONSTRAINT check_montant CHECK (montant > 0)
+
+);
+
+CREATE TABLE pole
+(
+  nom_pole varchar(30),
+  CONSTRAINT pk_pole PRIMARY KEY(nom_pole)
+);
+
+CREATE TABLE benevoleresp
+(
+  mail varchar(30),
+  nom varchar(30) NOT NULL,
+  prenom varchar(30) NOT NULL,
+  data_naissance date NOT NULL,
+  adresse varchar(50) NOT NULL,
+  numero_telephone varchar(30) NOT NULL,
+  id_evenement integer,
+  nom_pole varchar(30),
+  CONSTRAINT pk_benevolep PRIMARY KEY (mail),
+  CONSTRAINT fk_benevoleresp_pole FOREIGN KEY (nom_pole) REFERENCES pole(nom_pole)
+
+ 
+);
+
+CREATE TABLE salarie(
+  mail varchar(30),
+  nom varchar(30) NOT NULL,
+  prenom varchar(30) NOT NULL,
+  data_naissance date NOT NULL,
+  adresse varchar(50) NOT NULL,
+  numero_telephone varchar(30) NOT NULL,
+  CONSTRAINT pk_salarie PRIMARY KEY (mail)
+);
+
+
+CREATE TABLE post
+(
+  nom_post varchar(30),
+  mail varchar(30),
+  CONSTRAINT pk_post PRIMARY KEY(nom_post),
+  CONSTRAINT fk_post_salarie FOREIGN KEY (mail) REFERENCES salarie(mail)
+
+
+); 
