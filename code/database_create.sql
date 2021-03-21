@@ -37,8 +37,7 @@ CREATE TABLE salle
 (
     id_salle integer,
     nom_salle varchar(30),
-    capacite integer,
-    type_spectacle varchar(30) NOT NULL,
+    capacite BIGINT,
     id_spectacle integer NOT NULL,
     id_evenement integer NOT NULL,
     CONSTRAINT pk_salle PRIMARY KEY (id_salle),
