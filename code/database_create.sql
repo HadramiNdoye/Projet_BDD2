@@ -126,29 +126,26 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `benevole`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `benevole_inscription` (
-  `id_benevole` INT NOT NULL AUTO_INCREMENT,
-  `id_evenement` INT NOT NULL,
-  `id_benevole_responsable` INT NULL,
-  PRIMARY KEY (`id_benevole`, `id_evenement`),
-  INDEX `fk_benevole_inscription_responsable_idx` (`id_benevole_responsable` ASC) VISIBLE,
-  INDEX `fk_benevole_inscription_2_idx` (`id_evenement` ASC) VISIBLE,
-  CONSTRAINT `fk_benevole_inscription_1`
-    FOREIGN KEY (`id_benevole`)
-    REFERENCES `benevole` (`id_benevole`)
+CREATE TABLE IF NOT EXISTS `benevole` (
+  `id_benevole` INT NOT NULL,
+  `id_pole` INT NULL,
+  `id_personne` INT NULL,
+  `specificite` VARCHAR(45) NULL,
+  PRIMARY KEY (`id_benevole`),
+  INDEX `fk_benevole_personne_idx` (`id_personne` ASC) VISIBLE,
+  INDEX `fk_benevole_pole_idx` (`id_pole` ASC) VISIBLE,
+  CONSTRAINT `fk_benevole_personne`
+    FOREIGN KEY (`id_personne`)
+    REFERENCES `personne` (`id_personne`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_benevole_inscription_2`
-    FOREIGN KEY (`id_evenement`)
-    REFERENCES `evenement` (`id_evenement`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_benevole_inscription_responsable`
-    FOREIGN KEY (`id_benevole_responsable`)
-    REFERENCES `benevole_responsable` (`id_benevole_responsable`)
+  CONSTRAINT `fk_benevole_pole`
+    FOREIGN KEY (`id_pole`)
+    REFERENCES `pole` (`id_pole`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = big5;
 
 
 -- -----------------------------------------------------
@@ -242,17 +239,6 @@ CREATE TABLE IF NOT EXISTS `benevole_inscription` (
     REFERENCES `benevole_responsable` (`id_benevole_responsable`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `post`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `post` (
-  `id_post` INT NOT NULL AUTO_INCREMENT,
-  `nom_post` VARCHAR(45) NULL,
-  `mail` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_post`))
 ENGINE = InnoDB;
 
 
