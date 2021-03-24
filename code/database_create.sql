@@ -14,26 +14,35 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Table `evenement`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `evenement` (
-  `id_evenement` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `evenement`(
+  `id_evenement` INT AUTO_INCREMENT,
   `nom_evenement` VARCHAR(45) NULL,
-  `date_debut` DATETIME NOT NULL,
-  `date_fin` DATETIME NULL,
+  `date_debut` DATE NOT NULL,
+  `date_fin` DATE NULL,
   `lieu` VARCHAR(45) NULL,
   `statut` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_evenement`))
+  PRIMARY KEY (`id_evenement`),
+  CONSTRAINT date_compare CHECK(date_format(date_debut,%j) < date_format(date_fin,%j)),
+  CONSTRAINT date_check CHECK(date_fin <= date_debut + INTERVAL 60 day)
+  
+
+  )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `salle`
 -- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `salle` (
   `id_salle` INT NOT NULL,
   `nom_salle` VARCHAR(45) NOT NULL,
   `capacite` INT NOT NULL,
-  PRIMARY KEY (`id_salle`))
+  PRIMARY KEY (`id_salle`),
+  CONSTRAINT check_capacite CHECK (capacite IN(50,100,300)),
+  CONSTRAINT check_nomsalle CHECK (nom_salle IN('salle1','salle2','salle3')))
 ENGINE = InnoDB;
+
 
 
 -- -----------------------------------------------------
@@ -42,6 +51,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `spectacle` (
   `id_spectacle` INT NOT NULL,
   `type_spectacle` VARCHAR(45) NULL,
+  `date_spectacle` DATE NOT NULL,
   `heure_debut` TIME NULL,
   `heure_fin` TIME NULL,
   `id_evenement` INT NULL,
@@ -83,8 +93,9 @@ CREATE TABLE IF NOT EXISTS `artiste` (
     FOREIGN KEY (`id_spectacle`)
     REFERENCES `spectacle` (`id_spectacle`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION,
+    CONSTRAINT check_cachet CHECK (cachet > 0)
+    );
 
 
 -- -----------------------------------------------------
@@ -115,26 +126,29 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `benevole`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `benevole` (
+CREATE TABLE IF NOT EXISTS `benevole_inscription` (
   `id_benevole` INT NOT NULL,
-  `id_pole` INT NULL,
-  `id_personne` INT NULL,
-  `specificite` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_benevole`),
-  INDEX `fk_benevole_personne_idx` (`id_personne` ASC) VISIBLE,
-  INDEX `fk_benevole_pole_idx` (`id_pole` ASC) VISIBLE,
-  CONSTRAINT `fk_benevole_personne`
-    FOREIGN KEY (`id_personne`)
-    REFERENCES `personne` (`id_personne`)
+  `id_evenement` INT NOT NULL,
+  `id_benevole_responsable` INT NULL,
+  PRIMARY KEY (`id_benevole`, `id_evenement`),
+  INDEX `fk_benevole_inscription_responsable_idx` (`id_benevole_responsable` ASC) VISIBLE,
+  INDEX `fk_benevole_inscription_2_idx` (`id_evenement` ASC) VISIBLE,
+  CONSTRAINT `fk_benevole_inscription_1`
+    FOREIGN KEY (`id_benevole`)
+    REFERENCES `benevole` (`id_benevole`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_benevole_pole`
-    FOREIGN KEY (`id_pole`)
-    REFERENCES `pole` (`id_pole`)
+  CONSTRAINT `fk_benevole_inscription_2`
+    FOREIGN KEY (`id_evenement`)
+    REFERENCES `evenement` (`id_evenement`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_benevole_inscription_responsable`
+    FOREIGN KEY (`id_benevole_responsable`)
+    REFERENCES `benevole_responsable` (`id_benevole_responsable`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = big5;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -151,7 +165,8 @@ CREATE TABLE IF NOT EXISTS `tiket` (
     FOREIGN KEY (`id_personne`)
     REFERENCES `personne` (`id_personne`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION,
+    CONSTRAINT check_prix CHECK (prix > 0))
 ENGINE = InnoDB;
 
 
@@ -186,7 +201,9 @@ CREATE TABLE IF NOT EXISTS `payement` (
     FOREIGN KEY (`id_artist`)
     REFERENCES `artiste` (`id_artist`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION,
+    CONSTRAINT check_montant CHECK (montant > 0))
+
 ENGINE = InnoDB;
 
 
@@ -253,7 +270,8 @@ CREATE TABLE IF NOT EXISTS `salarie` (
     FOREIGN KEY (`id_personne`)
     REFERENCES `personne` (`id_personne`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION,
+    CONSTRAINT check_salaire CHECK (salaire > 0))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = big5;
 
