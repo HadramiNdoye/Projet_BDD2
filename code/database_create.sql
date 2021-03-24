@@ -20,9 +20,8 @@ CREATE TABLE IF NOT EXISTS `evenement`(
   `date_debut` DATE NOT NULL,
   `date_fin` DATE NULL,
   `lieu` VARCHAR(45) NULL,
-  `statut` VARCHAR(45) NULL,
   PRIMARY KEY (`id_evenement`),
-  CONSTRAINT date_compare CHECK(date_format(date_debut,%j) < date_format(date_fin,%j)),
+  CONSTRAINT date_compare CHECK(date_debut <= date_fin),
   CONSTRAINT date_check CHECK(date_fin <= date_debut + INTERVAL 60 day)
   
 
@@ -35,7 +34,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `salle` (
-  `id_salle` INT NOT NULL,
+  `id_salle` INT NOT NULL AUTO_INCREMENT,
   `nom_salle` VARCHAR(45) NOT NULL,
   `capacite` INT NOT NULL,
   PRIMARY KEY (`id_salle`),
@@ -49,7 +48,7 @@ ENGINE = InnoDB;
 -- Table `spectacle`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `spectacle` (
-  `id_spectacle` INT NOT NULL,
+  `id_spectacle` INT NOT NULL AUTO_INCREMENT,
   `type_spectacle` VARCHAR(45) NULL,
   `date_spectacle` DATE NOT NULL,
   `heure_debut` TIME NULL,
@@ -59,15 +58,16 @@ CREATE TABLE IF NOT EXISTS `spectacle` (
   PRIMARY KEY (`id_spectacle`),
   INDEX `fk_spectacle_evenement_idx` (`id_salle` ASC) VISIBLE,
   CONSTRAINT `fk_spectacle_evenement`
-    FOREIGN KEY (`id_salle`)
+    FOREIGN KEY (`id_evenement`)
     REFERENCES `evenement` (`id_evenement`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_spectacle_salle`
+    CONSTRAINT `fk_spectacle_salle`
     FOREIGN KEY (`id_salle`)
     REFERENCES `salle` (`id_salle`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION,
+    CONSTRAINT date_heure CHECK(`heure_debut` < `heure_fin`))
 ENGINE = InnoDB;
 
 
@@ -75,7 +75,7 @@ ENGINE = InnoDB;
 -- Table `artiste`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `artiste` (
-  `id_artist` INT NOT NULL,
+  `id_artist` INT NOT NULL AUTO_INCREMENT,
   `nom_artiste` VARCHAR(45) NOT NULL,
   `description_artiste` VARCHAR(45) NULL,
   `cachet` DOUBLE NOT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `artiste` (
 -- Table `personne`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `personne` (
-  `id_personne` INT NOT NULL,
+  `id_personne` INT NOT NULL AUTO_INCREMENT,
   `mail` VARCHAR(45) NOT NULL,
   `nom` VARCHAR(45) NOT NULL,
   `prenom` VARCHAR(45) NOT NULL,
@@ -117,7 +117,7 @@ ENGINE = InnoDB;
 -- Table `pole`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `pole` (
-  `id_pole` INT NOT NULL,
+  `id_pole` INT NOT NULL AUTO_INCREMENT,
   `nom_pole` VARCHAR(45) NULL,
   PRIMARY KEY (`id_pole`))
 ENGINE = InnoDB;
@@ -127,7 +127,7 @@ ENGINE = InnoDB;
 -- Table `benevole`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `benevole_inscription` (
-  `id_benevole` INT NOT NULL,
+  `id_benevole` INT NOT NULL AUTO_INCREMENT,
   `id_evenement` INT NOT NULL,
   `id_benevole_responsable` INT NULL,
   PRIMARY KEY (`id_benevole`, `id_evenement`),
@@ -155,7 +155,7 @@ ENGINE = InnoDB;
 -- Table `tiket`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tiket` (
-  `id_tiket` INT NOT NULL,
+  `id_tiket` INT NOT NULL AUTO_INCREMENT,
   `prix` DOUBLE NOT NULL,
   `id_personne` INT NOT NULL,
   `payement` VARCHAR(45) NOT NULL,
@@ -174,7 +174,7 @@ ENGINE = InnoDB;
 -- Table `tarif`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tarif` (
-  `id_tarif` INT NOT NULL,
+  `id_tarif` INT NOT NULL AUTO_INCREMENT,
   `type_tarif` VARCHAR(45) NULL,
   `id_spectacle` INT NULL,
   PRIMARY KEY (`id_tarif`),
@@ -191,7 +191,7 @@ ENGINE = InnoDB;
 -- Table `payement`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `payement` (
-  `id-payement` INT NOT NULL,
+  `id-payement` INT NOT NULL AUTO_INCREMENT,
   `id_artist` INT NULL,
   `date_payement` DATETIME NULL,
   `montant` DOUBLE NULL,
@@ -211,7 +211,7 @@ ENGINE = InnoDB;
 -- Table `benevole_responsable`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `benevole_responsable` (
-  `id_benevole_responsable` INT NOT NULL,
+  `id_benevole_responsable` INT NOT NULL AUTO_INCREMENT,
   `nom_responsabilite` VARCHAR(45) NULL,
   PRIMARY KEY (`id_benevole_responsable`))
 ENGINE = InnoDB;
@@ -221,7 +221,7 @@ ENGINE = InnoDB;
 -- Table `benevole_inscription`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `benevole_inscription` (
-  `id_benevole` INT NOT NULL,
+  `id_benevole` INT NOT NULL AUTO_INCREMENT ,
   `id_evenement` INT NOT NULL,
   `id_benevole_responsable` INT NULL,
   PRIMARY KEY (`id_benevole`, `id_evenement`),
@@ -249,7 +249,7 @@ ENGINE = InnoDB;
 -- Table `post`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `post` (
-  `id_post` INT NOT NULL,
+  `id_post` INT NOT NULL AUTO_INCREMENT,
   `nom_post` VARCHAR(45) NULL,
   `mail` VARCHAR(45) NULL,
   PRIMARY KEY (`id_post`))
@@ -260,7 +260,7 @@ ENGINE = InnoDB;
 -- Table `salarie`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `salarie` (
-  `id_salarie` INT NOT NULL,
+  `id_salarie` INT NOT NULL AUTO_INCREMENT,
   `poste` VARCHAR(45) NOT NULL,
   `id_personne` INT NULL,
   `salaire` DOUBLE NOT NULL,
@@ -280,7 +280,7 @@ DEFAULT CHARACTER SET = big5;
 -- Table `compte_client`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `compte_client` (
-  `id_compte_client` INT NOT NULL,
+  `id_compte_client` INT NOT NULL AUTO_INCREMENT,
   `id_personne` INT NOT NULL,
   PRIMARY KEY (`id_compte_client`),
   INDEX `fk_compte_client_idx` (`id_personne` ASC) VISIBLE,
