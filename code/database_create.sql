@@ -14,12 +14,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Table `evenement`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `evenement`(
+DROP TABLE IF EXISTS `evenement`;
+CREATE TABLE `evenement`(
   `id_evenement` INT AUTO_INCREMENT,
   `nom_evenement` VARCHAR(45) NULL,
   `date_debut` DATE NOT NULL,
   `date_fin` DATE NULL,
   `lieu` VARCHAR(45) NULL,
+  `statu` VARCHAR(45) DEFAULT 'non annulé',
   PRIMARY KEY (`id_evenement`),
   CONSTRAINT date_compare CHECK(date_debut <= date_fin),
   CONSTRAINT date_check CHECK(date_fin <= date_debut + INTERVAL 60 day)
@@ -32,8 +34,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `salle`
 -- -----------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `salle` (
+DROP TABLE IF EXISTS `salle`;
+CREATE TABLE `salle` (
   `id_salle` INT NOT NULL AUTO_INCREMENT,
   `nom_salle` VARCHAR(45) NOT NULL,
   `capacite` INT NOT NULL,
@@ -47,7 +49,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `spectacle`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `spectacle` (
+DROP TABLE IF EXISTS `spectacle`;
+CREATE TABLE `spectacle` (
   `id_spectacle` INT NOT NULL AUTO_INCREMENT,
   `type_spectacle` VARCHAR(45) NULL,
   `date_spectacle` DATE NOT NULL,
@@ -74,21 +77,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `artiste`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `artiste` (
+DROP TABLE IF EXISTS`artiste`;
+CREATE TABLE `artiste` (
   `id_artist` INT NOT NULL AUTO_INCREMENT,
   `nom_artiste` VARCHAR(45) NOT NULL,
   `description_artiste` VARCHAR(45) NULL,
   `cachet` DOUBLE NOT NULL,
   `id_spectacle` INT NULL,
-  `id_evenement` INT NULL,
-  INDEX `fk_artiste_evenement_idx` (`id_evenement` ASC) VISIBLE,
   INDEX `fk_artiste_spectacle_idx` (`id_spectacle` ASC) VISIBLE,
   PRIMARY KEY (`id_artist`),
-  CONSTRAINT `fk_artiste_evenement`
-    FOREIGN KEY (`id_evenement`)
-    REFERENCES `evenement` (`id_evenement`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_artiste_spectacle`
     FOREIGN KEY (`id_spectacle`)
     REFERENCES `spectacle` (`id_spectacle`)
@@ -101,7 +98,8 @@ CREATE TABLE IF NOT EXISTS `artiste` (
 -- -----------------------------------------------------
 -- Table `personne`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `personne` (
+DROP TABLE IF EXISTS `personne`;
+CREATE TABLE `personne` (
   `id_personne` INT NOT NULL AUTO_INCREMENT,
   `mail` VARCHAR(45) NOT NULL,
   `nom` VARCHAR(45) NOT NULL,
@@ -116,7 +114,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `pole`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pole` (
+DROP TABLE IF EXISTS `pole`;
+CREATE TABLE `pole` (
   `id_pole` INT NOT NULL AUTO_INCREMENT,
   `nom_pole` VARCHAR(45) NULL,
   PRIMARY KEY (`id_pole`))
@@ -126,8 +125,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `benevole`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `benevole` (
-  `id_benevole` INT NOT NULL,
+DROP TABLE IF EXISTS `benevole`;
+CREATE TABLE `benevole` (
+  `id_benevole` INT AUTO_INCREMENT,
   `id_pole` INT NULL,
   `id_personne` INT NULL,
   `specificite` VARCHAR(45) NULL,
@@ -151,11 +151,12 @@ DEFAULT CHARACTER SET = big5;
 -- -----------------------------------------------------
 -- Table `tiket`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tiket` (
+DROP TABLE IF EXISTS `tiket`;
+CREATE TABLE  `tiket` (
   `id_tiket` INT NOT NULL AUTO_INCREMENT,
   `prix` DOUBLE NOT NULL,
   `id_personne` INT NOT NULL,
-  `payement` VARCHAR(45) NOT NULL,
+  `mode_payement` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id_tiket`),
   INDEX `fk_tiket_personne_idx` (`id_personne` ASC) VISIBLE,
   CONSTRAINT `fk_tiket_personne`
@@ -170,7 +171,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `tarif`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tarif` (
+DROP TABLE IF EXISTS `tarif`;
+CREATE TABLE `tarif` (
   `id_tarif` INT NOT NULL AUTO_INCREMENT,
   `type_tarif` VARCHAR(45) NULL,
   `id_spectacle` INT NULL,
@@ -187,12 +189,13 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `payement`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `payement` (
-  `id-payement` INT NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `payement`;
+CREATE TABLE `payement` (
+  `id_payement` INT NOT NULL AUTO_INCREMENT,
   `id_artist` INT NULL,
   `date_payement` DATETIME NULL,
   `montant` DOUBLE NULL,
-  PRIMARY KEY (`id-payement`),
+  PRIMARY KEY (`id_payement`),
   INDEX `fk_payement_artiste_idx` (`id_artist` ASC) VISIBLE,
   CONSTRAINT `fk_payement_artiste`
     FOREIGN KEY (`id_artist`)
@@ -207,7 +210,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `benevole_responsable`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `benevole_responsable` (
+DROP TABLE IF EXISTS `benevole_responsable`;
+CREATE TABLE  `benevole_responsable` (
   `id_benevole_responsable` INT NOT NULL AUTO_INCREMENT,
   `nom_responsabilite` VARCHAR(45) NULL,
   PRIMARY KEY (`id_benevole_responsable`))
@@ -217,7 +221,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `benevole_inscription`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `benevole_inscription` (
+DROP TABLE IF EXISTS `benevole_inscription`;
+CREATE TABLE `benevole_inscription` (
   `id_benevole` INT NOT NULL AUTO_INCREMENT ,
   `id_evenement` INT NOT NULL,
   `id_benevole_responsable` INT NULL,
@@ -245,7 +250,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `salarie`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `salarie` (
+DROP TABLE IF EXISTS `salarie`;
+CREATE TABLE `salarie` (
   `id_salarie` INT NOT NULL AUTO_INCREMENT,
   `poste` VARCHAR(45) NOT NULL,
   `id_personne` INT NULL,
@@ -265,7 +271,8 @@ DEFAULT CHARACTER SET = big5;
 -- -----------------------------------------------------
 -- Table `compte_client`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `compte_client` (
+DROP TABLE IF EXISTS `compte_client`;
+CREATE TABLE `compte_client` (
   `id_compte_client` INT NOT NULL AUTO_INCREMENT,
   `id_personne` INT NOT NULL,
   PRIMARY KEY (`id_compte_client`),
