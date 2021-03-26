@@ -173,26 +173,7 @@ INSERT INTO `personne` (`id_personne`, `mail`, `nom`, `prenom`, `date_naissance`
 INSERT INTO `personne` (`id_personne`, `mail`, `nom`, `prenom`, `date_naissance`, `adresse`, `numero_telephone`) VALUES (19, 'quinn49@yahoo.com', 'Watsica', 'Ben', '2004-07-19', '9883 Cormier Shoals\nMortimerview, MT 06614', '269.378.7694x58712');
 INSERT INTO `personne` (`id_personne`, `mail`, `nom`, `prenom`, `date_naissance`, `adresse`, `numero_telephone`) VALUES (20, 'ariel.schamberger@hotmail.com', 'Nader', 'Toy', '2009-03-17', '950 Hoeger Ferry Suite 628\nWest Anabelle, FL ', '939.749.0661');
 
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (1, '736', 1, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (2, '903', 2, 'sur place');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (3, '163', 3, 'sur place');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (4, '235', 4, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (5, '791', 5, 'sur place');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (6, '918', 6, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (7, '279', 7, 'sur place');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (8, '637', 8, 'sur place');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (9, '948', 9, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (10, '117', 10, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (11, '70', 11, 'sur place');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (12, '147', 12, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (13, '226', 13, 'sur place');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (14, '783', 14, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (15, '103', 15, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (16, '879', 16, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (17, '750', 17, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (18, '831', 18, 'sur place');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (19, '697', 19, 'en ligne');
-INSERT INTO `tiket` (`id_tiket`, `prix`, `id_personne`, `mode_payement`) VALUES (20, '843', 20, 'en ligne');
+INSERT INTO `tiket` VALUES (1,573,'en ligne',1,1,'non'),(2,489,'en ligne',2,2,'non'),(3,607,'sur place',3,3,'non'),(4,726,'en ligne',4,4,'non'),(5,503,'sur place',5,5,'non'),(6,767,'en ligne',6,6,'non'),(7,397,'sur place',7,7,'non'),(8,629,'sur place',8,8,'non'),(9,675,'sur place',9,9,'non'),(10,562,'en ligne',10,10,'non'),(11,234,'en ligne',11,11,'non'),(12,316,'en ligne',12,12,'non'),(13,526,'en ligne',13,13,'non'),(14,981,'sur place',14,14,'non'),(15,66,'sur place',15,15,'non'),(16,254,'en ligne',16,16,'non'),(17,668,'sur place',17,17,'non'),(18,899,'en ligne',18,18,'non'),(19,916,'en ligne',19,19,'non'),(20,322,'en ligne',20,20,'non');
 
 INSERT INTO `pole` (`id_pole`, `nom_pole`) VALUES (1, ' organisation');
 INSERT INTO `pole` (`id_pole`, `nom_pole`) VALUES (2, ' nettoyage');

@@ -155,13 +155,20 @@ DROP TABLE IF EXISTS `tiket`;
 CREATE TABLE  `tiket` (
   `id_tiket` INT NOT NULL AUTO_INCREMENT,
   `prix` DOUBLE NOT NULL,
-  `id_personne` INT NOT NULL,
   `mode_payement` VARCHAR(45) NOT NULL,
+  `id_personne` INT NOT NULL,
+  `id_spectacle` INT NOT NULL,
+  `remboursement` CHAR(5) DEFAULT 'non',
   PRIMARY KEY (`id_tiket`),
   INDEX `fk_tiket_personne_idx` (`id_personne` ASC) VISIBLE,
   CONSTRAINT `fk_tiket_personne`
     FOREIGN KEY (`id_personne`)
     REFERENCES `personne` (`id_personne`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    CONSTRAINT `fk_tiket_spectacle`
+    FOREIGN KEY (`id_spectacle`)
+    REFERENCES `spectacle` (`id_spectacle`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
     CONSTRAINT check_prix CHECK (prix > 0))
