@@ -149,24 +149,24 @@ DEFAULT CHARACTER SET = big5;
 
 
 -- -----------------------------------------------------
--- Table `tiket`
+-- Table `ticket`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `tiket`;
-CREATE TABLE  `tiket` (
-  `id_tiket` INT NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `ticket`;
+CREATE TABLE  `ticket` (
+  `id_ticket` INT NOT NULL AUTO_INCREMENT,
   `prix` DOUBLE NOT NULL,
   `mode_payement` VARCHAR(45) NOT NULL,
   `id_personne` INT NOT NULL,
   `id_spectacle` INT NOT NULL,
   `remboursement` CHAR(5) DEFAULT 'non',
-  PRIMARY KEY (`id_tiket`),
-  INDEX `fk_tiket_personne_idx` (`id_personne` ASC) VISIBLE,
-  CONSTRAINT `fk_tiket_personne`
+  PRIMARY KEY (`id_ticket`),
+  INDEX `fk_ticket_personne_idx` (`id_personne` ASC) VISIBLE,
+  CONSTRAINT `fk_ticket_personne`
     FOREIGN KEY (`id_personne`)
     REFERENCES `personne` (`id_personne`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-    CONSTRAINT `fk_tiket_spectacle`
+    CONSTRAINT `fk_ticket_spectacle`
     FOREIGN KEY (`id_spectacle`)
     REFERENCES `spectacle` (`id_spectacle`)
     ON DELETE NO ACTION
