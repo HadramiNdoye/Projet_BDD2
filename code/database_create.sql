@@ -159,6 +159,8 @@ CREATE TABLE  `ticket` (
   `id_personne` INT NOT NULL,
   `id_spectacle` INT NOT NULL,
   `remboursement` CHAR(5) DEFAULT 'non',
+  `statut_reservation` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT 'payé',
+  `disponibilite` VARCHAR(45) DEFAULT 'non disponible',
   PRIMARY KEY (`id_ticket`),
   INDEX `fk_ticket_personne_idx` (`id_personne` ASC) VISIBLE,
   CONSTRAINT `fk_ticket_personne`
@@ -253,6 +255,19 @@ CREATE TABLE `benevole_inscription` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+DROP TABLE IF EXISTS `benevole_affectation`;
+CREATE TABLE `benevole_affectation` (
+  `id_benevole_affectation` int(11) NOT NULL AUTO_INCREMENT,
+  `id_benevole_responsable` int(11) DEFAULT NULL,
+  `id_benevole` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_benevole_affectation`),
+  KEY `fk_benevole_affectation_inscription` (`id_benevole`),
+  KEY `fk_benevole_affectation_1_responsable` (`id_benevole_responsable`),
+  CONSTRAINT `fk_benevole_affectation_1_responsable` FOREIGN KEY (`id_benevole_responsable`) REFERENCES `benevole_responsable` (`id_benevole_responsable`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_benevole_affectation_inscription` FOREIGN KEY (`id_benevole`) REFERENCES `benevole_inscription` (`id_benevole`) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
+ ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table `salarie`
