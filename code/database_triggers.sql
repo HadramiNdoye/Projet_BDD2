@@ -12,7 +12,7 @@ BEGIN
     -- On recupere l'attribut remboursement --
     SET ticket_remboursement = (SELECT t.remboursement FROM ticket t,spectacle s WHERE t.id_spectacle=s.id_spectacle
          AND s.id_evenement=new.id_evenement);
-    IF (NEW.statu='annullé') THEN
+    IF (NEW.statut='annulé') THEN
       SET ticket_remboursement='oui';
       UPDATE ticket t ,spectacle s SET t.remboursement=ticket_remboursement WHERE new.id_evenement=s.id_evenement 
       AND t.id_spectacle=s.id_spectacle;
@@ -96,19 +96,20 @@ DELIMITER ;
 -- le cinquieme trigger--
 
 DELIMITER //
-CREATE TRIGGER insert_ticket AFTER INSERT
+DROP TRIGGER IF EXISTS insert_ticket;
+CREATE TRIGGER insert_ticket BEFORE INSERT
 ON ticket FOR EACH ROW
 
 
 BEGIN
     -- Declaration des variables  --
-    DECLARE temps_restant INT;
+    DECLARE temps_restant TIME;
     DECLARE new_heure_debut TIME ;
     SET new_heure_debut = (SELECT spec.heure_debut FROM spectacle AS spec
-    WHERE spec.id_spectacle = new.id_spectacle);
-    SET temps_restant = (SELECT (CURTIME()-new_heure_debut));
-    IF(new.statut_reservation = 'non payé' AND temps_restant <=15 ) THEN 
-      UPDATE ticket AS t SET t.disponibilite = 'disponible' WHERE t.id_ticket = new.id_ticket ;
+    WHERE new.id_spectacle=spec.id_spectacle);
+    SET temps_restant = (SELECT (TIMEDIFF(new_heure_debut,CURTIME())));
+    IF(new.statut_reservation = 'non payé' AND temps_restant <='00:15:00' ) THEN 
+      SET new.disponibilite = 'disponible';
     END IF;
 
 END//

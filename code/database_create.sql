@@ -21,7 +21,7 @@ CREATE TABLE `evenement`(
   `date_debut` DATE NOT NULL,
   `date_fin` DATE NULL,
   `lieu` VARCHAR(45) NULL,
-  `statu` VARCHAR(45) DEFAULT 'non annulé',
+  `statut` VARCHAR(45) DEFAULT 'non annulé',
   PRIMARY KEY (`id_evenement`),
   CONSTRAINT date_compare CHECK(date_debut <= date_fin),
   CONSTRAINT date_check CHECK(date_fin <= date_debut + INTERVAL 60 day)
@@ -203,16 +203,14 @@ CREATE TABLE `payement` (
   `id_payement` INT NOT NULL AUTO_INCREMENT,
   `id_artist` INT NULL,
   `date_payement` DATETIME NULL,
-  `montant` DOUBLE NULL,
   PRIMARY KEY (`id_payement`),
   INDEX `fk_payement_artiste_idx` (`id_artist` ASC) VISIBLE,
   CONSTRAINT `fk_payement_artiste`
     FOREIGN KEY (`id_artist`)
     REFERENCES `artiste` (`id_artist`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT check_montant CHECK (montant > 0))
-
+    ON UPDATE NO ACTION
+)
 ENGINE = InnoDB;
 
 
