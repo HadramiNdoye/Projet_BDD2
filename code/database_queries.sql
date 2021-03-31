@@ -35,7 +35,37 @@ and e.id_evenement = spec.id_evenement and t.id_spectacle = spec.id_spectacle
 GROUP BY e.nom_evenement
 order BY meilleur_vente desc;
 
--- 6.--
+-- 6.  Proposer une requête d’insertion d’un événement composé de 7 spectacles qui utilisent les 3 salles --
+INSERT INTO `evenement` (`id_evenement`, `nom_evenement`, `date_debut`, `date_fin`, `lieu`, `statut`)
+VALUES (62, 'fete de la musique', '2021-08-10', '2021-08-23', 'grenoble', 'non annulé');
+INSERT INTO `salle` (`id_salle`, `nom_salle`, `capacite`) VALUES (21, 'salle2', 100);
+INSERT INTO `spectacle` (`type_spectacle`, `date_spectacle`, `heure_debut`, `heure_fin`, `id_evenement`, `id_salle`) 
+VALUES ('lectures', '2021-03-21', '03:52:36', '04:38:29', 62, 21);
+
+INSERT INTO `salle` (`nom_salle`, `capacite`) VALUES ('salle2', 100);
+INSERT INTO `spectacle` (`type_spectacle`, `date_spectacle`, `heure_debut`, `heure_fin`, `id_evenement`, `id_salle`) 
+VALUES ('lectures', '2021-03-21', '04:52:36', '05:38:29', 62, 24);
+
+INSERT INTO `salle` (`id_salle`,`nom_salle`, `capacite`) VALUES (25,'salle2', 100);
+INSERT INTO `spectacle` (`type_spectacle`, `date_spectacle`, `heure_debut`, `heure_fin`, `id_evenement`, `id_salle`) 
+VALUES ('lectures', '2021-03-21', '04:52:36', '05:38:29', 62, 25);
+
+INSERT INTO `salle` (`id_salle`,`nom_salle`, `capacite`) VALUES (26,'salle2', 100);
+INSERT INTO `spectacle` (`type_spectacle`, `date_spectacle`, `heure_debut`, `heure_fin`, `id_evenement`, `id_salle`) 
+VALUES ('lectures', '2021-03-21', '03:52:36', '04:38:29', 62, 26);
+
+INSERT INTO `salle` (`id_salle`,`nom_salle`, `capacite`) VALUES (27,'salle2', 100);
+INSERT INTO `spectacle` (`type_spectacle`, `date_spectacle`, `heure_debut`, `heure_fin`, `id_evenement`, `id_salle`) 
+VALUES ('lectures', '2021-03-21', '03:52:36', '04:38:29', 62, 27);
+
+INSERT INTO `salle` (`id_salle`,`nom_salle`, `capacite`) VALUES (28,'salle1', 100);
+INSERT INTO `spectacle` (`type_spectacle`, `date_spectacle`, `heure_debut`, `heure_fin`, `id_evenement`, `id_salle`) 
+VALUES ('lectures', '2021-03-21', '03:52:36', '04:38:29', 62, 28);
+
+INSERT INTO `salle` (`id_salle`,`nom_salle`, `capacite`) VALUES (29,'salle3', 100);
+INSERT INTO `spectacle` (`type_spectacle`, `date_spectacle`, `heure_debut`, `heure_fin`, `id_evenement`, `id_salle`) 
+VALUES ('danse', '2021-03-21', '03:52:36', '04:38:29', 62, 29);
+
 -- 7. Les salaires annuels des salariés pour une année donnée--
 select id_salarie,(salaire*12) as salaire_annuelle, 
 year(now()) as annee
